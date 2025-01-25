@@ -44,7 +44,7 @@ module.exports = class UserController {
     
             // Salva o novo usuário no banco de dados
             const userSave = await userData.save();
-            
+
             await CreateUserToken(userSave,req,res)
         } catch (err) {
             // Caso ocorra um erro inesperado durante o processo, registra no console
@@ -54,9 +54,28 @@ module.exports = class UserController {
             return res.status(500).json({ message: 'Ocorreu um erro no servidor.', erro: err.message });
         }
     }
-    
-    
+    static async login(req,res){
+        const {email,senha} = req.body
 
+        if(!email || !senha){
+
+            return res.status(422).json({message:'Campo Obrigatório'})
+        }
+
+        const user = await User.findOne({email})
+
+        if(!user){
+            return res.status(422).json({message:'Usuário não Cadastrado'})
+        }
+
+        const Checkpass = await bcrypt.compare(senha,user.senha)
+
+        if(!Checkpass){
+            return res.status(422).json({message:'Senha Incorreta'})
+        }
+
+        await CreateUserToken(user,req,res)
     }
+}
 
 
