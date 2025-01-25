@@ -1,6 +1,8 @@
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const CreateUserToken = require('../helpers/create-token-user')
+const getToken = require('../helpers/get-token')
 module.exports = class UserController {
     static async registrar(req, res) {
         // Desestrutura os campos recebidos no corpo da requisição
@@ -76,6 +78,26 @@ module.exports = class UserController {
 
         await CreateUserToken(user,req,res)
     }
+
+    static async checkUser(req, res) {
+        let useratual;
+    
+        // Verifica se existe um cabeçalho de autorização
+        if (req.headers.authorization) {
+            const token = getToken(req); // Extrai o token do cabeçalho de autorização
+            const decoded = jwt.verify(token, 'nossosecret'); // Decodifica o token usando a chave secreta 'secret'
+    
+            useratual = await User.findById(decoded.id); // Busca o usuário no banco pelo ID decodificado do token
+    
+            useratual.senha = undefined; // Remove a senha do objeto de usuário antes de enviar a resposta
+        } else {
+            useratual = null; // Se não houver token, define useratual como null
+        }
+    
+        // Envia a resposta com o usuário atual ou null
+        res.status(200).send(useratual);
+    }
+    
 }
 
 
