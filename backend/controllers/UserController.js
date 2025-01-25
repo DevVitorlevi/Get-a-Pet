@@ -1,6 +1,6 @@
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
-
+const CreateUserToken = require('../helpers/create-token-user')
 module.exports = class UserController {
     static async registrar(req, res) {
         // Desestrutura os campos recebidos no corpo da requisição
@@ -44,9 +44,8 @@ module.exports = class UserController {
     
             // Salva o novo usuário no banco de dados
             const userSave = await userData.save();
-    
-            // Retorna uma mensagem de sucesso com o status 201 (Created) e os dados do usuário criado
-            return res.status(201).json({ message: 'Usuário criado com sucesso!', user: userSave });
+            
+            await CreateUserToken(userSave,req,res)
         } catch (err) {
             // Caso ocorra um erro inesperado durante o processo, registra no console
             console.error(err);
