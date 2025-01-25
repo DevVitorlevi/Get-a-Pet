@@ -97,17 +97,25 @@ module.exports = class UserController {
         // Envia a resposta com o usuário atual ou null
         res.status(200).send(useratual);
     }
-    static async getUser(req,res){
-        const id = req.params.id
-
-        const user = await User.findById(id).select('-senha')
-
-        if(!user){
-            return res.status(422).json({message:'Usuário Não Encontrado'})
+    static async getUser(req, res) {
+        // Extrai o ID do usuário da URL, que foi enviado como parâmetro (req.params.id)
+        const id = req.params.id;
+    
+        // Busca o usuário no banco de dados pelo ID fornecido e exclui o campo "senha" do resultado retornado
+        const user = await User.findById(id).select('-senha');
+    
+        // Verifica se o usuário foi encontrado
+        if (!user) {
+            // Caso o usuário não seja encontrado, retorna uma resposta com status 422 (Unprocessable Entity)
+            // e uma mensagem indicando que o usuário não foi encontrado
+            return res.status(422).json({ message: 'Usuário Não Encontrado' });
         }
-
-        res.status(200).json({user:user})
+    
+        // Caso o usuário seja encontrado, retorna uma resposta com status 200 (OK)
+        // e o objeto do usuário no formato JSON, excluindo a senha
+        res.status(200).json({ user: user });
     }
+    
 }
 
 
