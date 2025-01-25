@@ -56,29 +56,41 @@ module.exports = class UserController {
             return res.status(500).json({ message: 'Ocorreu um erro no servidor.', erro: err.message });
         }
     }
-    static async login(req,res){
-        const {email,senha} = req.body
-
-        if(!email || !senha){
-
-            return res.status(422).json({message:'Campo Obrigatório'})
+    static async login(req, res) {
+        // Extrai o email e a senha do corpo da requisição
+        const { email, senha } = req.body;
+    
+        // Verifica se os campos email e senha foram preenchidos
+        if (!email || !senha) {
+            // Se algum campo estiver vazio, retorna status 422 (Unprocessable Entity)
+            // com uma mensagem indicando que os campos são obrigatórios
+            return res.status(422).json({ message: 'Campo Obrigatório' });
         }
-
-        const user = await User.findOne({email})
-
-        if(!user){
-            return res.status(422).json({message:'Usuário não Cadastrado'})
+    
+        // Busca no banco de dados por um usuário com o email fornecido
+        const user = await User.findOne({ email });
+    
+        // Verifica se o usuário foi encontrado
+        if (!user) {
+            // Se o usuário não foi encontrado, retorna status 422
+            // com uma mensagem indicando que o usuário não está cadastrado
+            return res.status(422).json({ message: 'Usuário não Cadastrado' });
         }
-
-        const Checkpass = await bcrypt.compare(senha,user.senha)
-
-        if(!Checkpass){
-            return res.status(422).json({message:'Senha Incorreta'})
+    
+        // Compara a senha fornecida pelo usuário com a senha armazenada no banco
+        const Checkpass = await bcrypt.compare(senha, user.senha);
+    
+        // Verifica se a senha está incorreta
+        if (!Checkpass) {
+            // Se a senha for inválida, retorna status 422
+            // com uma mensagem indicando que a senha está incorreta
+            return res.status(422).json({ message: 'Senha Incorreta' });
         }
-
-        await CreateUserToken(user,req,res)
+    
+        // Caso as credenciais estejam corretas, cria um token para o usuário
+        await CreateUserToken(user, req, res);
     }
-
+    
     static async checkUser(req, res) {
         let useratual;
     
