@@ -16,7 +16,7 @@ const User = mongoose.model('User', new Schema({
         require:true
     },
     senha:{
-        type:Number,require:true
+        type:String,require:true
     },
 
 },
