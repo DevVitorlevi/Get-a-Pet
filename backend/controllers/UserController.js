@@ -127,6 +127,10 @@ module.exports = class UserController {
         // e o objeto do usuário no formato JSON, excluindo a senha
         res.status(200).json({ user: user });
     }
+
+    static async editUser(req,res){
+        res.status(200).json({messsage:'OK'})
+    }
     
 }
 
