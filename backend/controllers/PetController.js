@@ -1,6 +1,7 @@
 const Pet = require('../models/Pet')
 const getToken = require('../helpers/get-token')
 const getUserbyToken = require("../helpers/get-user-by-token")
+const ObjectId = require('mongoose').Types.ObjectId
 
 module.exports = class PetController {
     // Método estático assíncrono para criar um pet
@@ -98,6 +99,28 @@ module.exports = class PetController {
             res.status(500).json({ message: 'Erro no Servidor' }); // Retorna erro 500 em caso de falha.
         }
     }
+    static async PetId(req, res) {
+        const id = req.params.id; 
+        // Obtém o ID do pet a partir dos parâmetros da URL.
+    
+        if (!ObjectId.isValid(id)) { 
+            // Verifica se o ID fornecido é válido (formato correto para um ObjectId do MongoDB).
+            return res.status(422).json({ message: 'Id Inválido' });
+            // Retorna um erro 422 (Entidade Não Processável) caso o ID seja inválido.
+        }
+    
+        try {
+            const OnePet = await Pet.findById(id); 
+            // Procura no banco de dados um pet pelo ID fornecido.
+    
+            res.status(200).json({ pet: OnePet });
+            // Retorna o pet encontrado com status 200 (OK) no formato JSON.
+        } catch (e) {
+            res.status(500).json({ message: 'Erro no Servidor' });
+            // Retorna um erro 500 (Erro Interno do Servidor) caso ocorra alguma falha no processo.
+        }
+    }
+    
 
 
 
