@@ -1,18 +1,26 @@
-const jwt = require('jsonwebtoken')
-const User = require('../models/User')
+const jwt = require('jsonwebtoken');  
+const User = require('../models/User');  
 
-const getUserbyToken = async (token)=>{
-    if(!token){
-        return  res.status(401).json({message:'Acesso Negado'})
-    }
+// Função que obtém um usuário com base no token JWT  
+const getUserbyToken = async (token) => {  
+    // Verifica se o token foi passado  
+    if (!token) {  
+        // Se o token não existir, retorna um status 401 (Unauthorized) e uma mensagem de erro  
+        return res.status(401).json({ message: 'Acesso Negado' });  
+    }  
 
-    const decoded = jwt.verify(token,'nossosecret')
+    // Decodifica o token para extrair os dados do usuário usando a chave secreta  
+    const decoded = jwt.verify(token, 'nossosecret');  
 
-    const userid = decoded.id
+    // Obtém o ID do usuário a partir do token decodificado  
+    const userid = decoded.id;  
 
-    const user = await User.findOne({_id:userid})
+    // Busca o usuário no banco de dados pelo ID extraído do token  
+    const user = await User.findOne({ _id: userid });  
 
-    return user
-}
+    // Retorna o usuário encontrado  
+    return user;  
+};  
 
-module.exports = getUserbyToken
+// Exporta a função para que ela possa ser usada em outros arquivos  
+module.exports = getUserbyToken;  

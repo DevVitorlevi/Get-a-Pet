@@ -129,34 +129,43 @@ module.exports = class UserController {
         res.status(200).json({ user: user });
     }
 
-    static async editUser(req,res){
-        const id = req.params.id
-
-        const token = getToken(req)
-        const user = await getUserbyToken(token)
-
+    static async editUser(req, res) {
+        // Obtém o ID do usuário a partir dos parâmetros da URL
+        const id = req.params.id;
+    
+        // Obtém o token JWT do cabeçalho de autorização da requisição
+        const token = getToken(req);
+    
+        // Recupera os dados do usuário usando o token
+        const user = await getUserbyToken(token);
+    
+        // Desestrutura os dados enviados no corpo da requisição
         const { nome, email, telefone, senha, confirmesenha } = req.body;
-        let image =''
-
-       // Verifica se todos os campos obrigatórios foram preenchidos
+    
+        // Inicializa uma variável 'image' como uma string vazia (pode ser usada para futuras implementações de upload de imagens)
+        let image = '';
+    
+        // Verifica se todos os campos obrigatórios foram preenchidos
         if (!nome || !email || !telefone || !senha || !confirmesenha) {
-        // Retorna uma mensagem de erro com o status 422 (Unprocessable Entity)
-        return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
-    }
-
-    // Verifica se as senhas informadas são iguais
+            // Retorna uma mensagem de erro com o status 422 (Unprocessable Entity)
+            return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
+        }
+    
+        // Verifica se as senhas informadas coincidem
         if (senha !== confirmesenha) {
-        // Retorna uma mensagem de erro se as senhas não coincidirem
-        return res.status(422).json({ message: 'As senhas não coincidem.' });
+            // Retorna uma mensagem de erro se as senhas não coincidirem
+            return res.status(422).json({ message: 'As senhas não coincidem.' });
         }
-
-        const userexist = await User.findOne({email})
-
-        if(user.email !== email && userexist){
-            return res.status(422).json({message:'Usuário nn Encontrado'})
+    
+        // Verifica se já existe um usuário no banco com o mesmo e-mail informado
+        const userexist = await User.findOne({ email });
+    
+        // Se o e-mail informado não for o mesmo do usuário atual e já existir outro usuário com o mesmo e-mail, retorna erro
+        if (user.email !== email && userexist) {
+            return res.status(422).json({ message: 'Usuário não encontrado.' });
         }
-
-    };
+    }
+    
     
 }
 
