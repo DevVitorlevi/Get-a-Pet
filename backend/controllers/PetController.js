@@ -40,9 +40,12 @@ module.exports = class PetController {
                 }
             });
 
-            images.map(image=>{
-                DataPet.image.push(image.filename) 
-            })
+            // Percorre todas as imagens enviadas no campo 'images'
+            images.map(image => {
+                // Adiciona o nome do arquivo de cada imagem ao array 'image' do objeto 'DataPet'
+                DataPet.image.push(image.filename);
+            });
+
 
             // Salva o novo pet no banco de dados
             const Petsave = await DataPet.save();
