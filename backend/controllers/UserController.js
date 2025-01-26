@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const CreateUserToken = require('../helpers/create-token-user')
 const getToken = require('../helpers/get-token')
+const getUserbyToken = require('../helpers/get-user-by-token')
 module.exports = class UserController {
     static async registrar(req, res) {
         // Desestrutura os campos recebidos no corpo da requisição
@@ -129,8 +130,33 @@ module.exports = class UserController {
     }
 
     static async editUser(req,res){
-        res.status(200).json({messsage:'OK'})
+        const id = req.params.id
+
+        const token = getToken(req)
+        const user = await getUserbyToken(token)
+
+        const { nome, email, telefone, senha, confirmesenha } = req.body;
+        let image =''
+
+       // Verifica se todos os campos obrigatórios foram preenchidos
+        if (!nome || !email || !telefone || !senha || !confirmesenha) {
+        // Retorna uma mensagem de erro com o status 422 (Unprocessable Entity)
+        return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
     }
+
+    // Verifica se as senhas informadas são iguais
+        if (senha !== confirmesenha) {
+        // Retorna uma mensagem de erro se as senhas não coincidirem
+        return res.status(422).json({ message: 'As senhas não coincidem.' });
+        }
+
+        const userexist = await User.findOne({email})
+
+        if(user.email !== email && userexist){
+            return res.status(422).json({message:'Usuário nn Encontrado'})
+        }
+
+    };
     
 }
 
