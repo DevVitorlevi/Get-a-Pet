@@ -69,8 +69,22 @@ module.exports = class PetController {
         } catch (err) {
             // Em caso de erro, retorna uma resposta HTTP com status 500 (erro no servidor)
             return res.status(500).json({ message: 'Erro no Servidor' });
+        }
+}
+static async Mypets(req, res) {
+    const token = getToken(req); // Obtém o token de autenticação da requisição.
+    const user = await getUserbyToken(token); // Busca o usuário correspondente ao token.
+
+    try {
+        const pets = await Pet.find({ 'user._id': user._id }).sort('-createdAt');
+        // Busca todos os pets do usuário ordenados por data de criação (mais recentes primeiro).
+
+        res.status(200).json({ pet: pets }); // Retorna os pets encontrados com status 200 (OK).
+    } catch (err) {
+        res.status(500).json({ message: 'Erro no Servidor' }); // Retorna erro 500 em caso de falha.
     }
 }
+
 
 
     
