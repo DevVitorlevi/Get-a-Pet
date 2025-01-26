@@ -57,5 +57,22 @@ module.exports = class PetController {
             return res.status(500).json({ message: 'Erro no Servidor' });
         }
     }
+    // Define o método estático assíncrono chamado 'Allpets' no controlador
+    static async Allpets(req, res) {
+        try {
+            // Realiza uma busca no banco de dados pelo modelo 'Pet'
+            // e ordena os resultados pela data de criação ('createdAt') em ordem decrescente
+            const AllPets = await Pet.find().sort('-createdAt');
+
+            // Retorna uma resposta HTTP com status 200 (OK) contendo uma mensagem e os pets resgatados
+            res.status(200).json({ message: 'Pets resgatados', pet: AllPets });
+        } catch (err) {
+            // Em caso de erro, retorna uma resposta HTTP com status 500 (erro no servidor)
+            return res.status(500).json({ message: 'Erro no Servidor' });
+    }
+}
+
+
+    
 }
 
