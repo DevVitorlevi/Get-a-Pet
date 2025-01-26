@@ -142,8 +142,11 @@ module.exports = class UserController {
         // Desestrutura os dados enviados no corpo da requisição
         const { nome, email, telefone, senha, confirmesenha } = req.body;
     
-        // Inicializa uma variável 'image' como uma string vazia (reservada para futuras implementações de upload de imagens)
-        let image = '';
+        // Inicializa uma variável 'image' como uma string vazia (reservada para futuras implementações de upload de imagens
+
+        if(req.file){
+            user.image = req.file.filename
+        }
     
         // Verifica se todos os campos obrigatórios foram preenchidos
         if (!nome || !email || !telefone || !senha || !confirmesenha) {
