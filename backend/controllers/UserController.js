@@ -142,7 +142,7 @@ module.exports = class UserController {
         // Desestrutura os dados enviados no corpo da requisição
         const { nome, email, telefone, senha, confirmesenha } = req.body;
     
-        // Inicializa uma variável 'image' como uma string vazia (pode ser usada para futuras implementações de upload de imagens)
+        // Inicializa uma variável 'image' como uma string vazia (reservada para futuras implementações de upload de imagens)
         let image = '';
     
         // Verifica se todos os campos obrigatórios foram preenchidos
@@ -151,10 +151,24 @@ module.exports = class UserController {
             return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
         }
     
+        // Atualiza os dados do usuário no objeto recuperado
+        user.nome = nome;
+        user.email = email;
+        user.telefone = telefone;
+    
         // Verifica se as senhas informadas coincidem
         if (senha !== confirmesenha) {
             // Retorna uma mensagem de erro se as senhas não coincidirem
             return res.status(422).json({ message: 'As senhas não coincidem.' });
+        } else if (senha === confirmesenha && senha !== null) {
+            // Gera um "salt" para criptografar a senha (adiciona aleatoriedade ao hash)
+            const salt = await bcrypt.genSalt(12);
+    
+            // Criptografa a senha do usuário com o "salt" gerado
+            const hashPass = await bcrypt.hash(senha, salt);
+    
+            // Atualiza a senha criptografada no objeto do usuário
+            user.senha = hashPass;
         }
     
         // Verifica se já existe um usuário no banco com o mesmo e-mail informado
@@ -162,7 +176,24 @@ module.exports = class UserController {
     
         // Se o e-mail informado não for o mesmo do usuário atual e já existir outro usuário com o mesmo e-mail, retorna erro
         if (user.email !== email && userexist) {
-            return res.status(422).json({ message: 'Usuário não encontrado.' });
+            return res.status(422).json({ message: 'E-mail já está em uso por outro usuário.' });
+        }
+    
+        try {
+            // Atualiza o usuário no banco de dados usando o ID
+            await User.findOneAndUpdate(
+                { _id: user._id }, // Localiza o usuário pelo ID
+                { $set: user }, // Substitui os dados pelo objeto atualizado
+                { new: true } // Garante que o documento retornado seja o atualizado
+            );
+    
+            // Retorna uma mensagem de sucesso
+            res.status(200).json({
+                message: 'Usuário atualizado com sucesso.'
+            });
+        } catch (error) {
+            // Retorna uma mensagem de erro caso algo dê errado no servidor
+            return res.status(500).json({ message: 'Erro no servidor. Por favor, tente novamente mais tarde.' });
         }
     }
     
