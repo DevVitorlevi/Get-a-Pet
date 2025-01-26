@@ -1,6 +1,6 @@
 const Pet = require('../models/Pet')
 const getToken = require('../helpers/get-token')
-const getUserbyId = require("../helpers/get-user-by-token")
+const getUserbyToken = require("../helpers/get-user-by-token")
 
 module.exports = class PetController {
     // Método estático assíncrono para criar um pet
@@ -19,7 +19,7 @@ module.exports = class PetController {
         // Obtém o token de autenticação da requisição
         const token = getToken(req);
         // Obtém o usuário relacionado ao token
-        const user = await getUserbyId(token);
+        const user = await getUserbyToken(token);
 
         try {
             // Cria uma instância de Pet com os dados fornecidos
