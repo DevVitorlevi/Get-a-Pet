@@ -11,8 +11,10 @@ module.exports = class PetController {
         // Define se o pet está disponível
         const disponivel = true;
 
+        const images = req.files
+
         // Verifica se algum campo obrigatório está faltando
-        if (!nome || !idade || !peso || !cor) {
+        if (!nome || !idade || !peso || !cor||images.length.value === 0 ) {
             return res.status(422).json({ message: 'Campo Obrigatório' });
         }
         
@@ -29,7 +31,7 @@ module.exports = class PetController {
                 peso,
                 cor,
                 disponivel,
-                image: [], // Array vazio para imagens do pet
+                images: [], // Array vazio para imagens do pet
                 user: { // Dados do usuário que está criando o pet
                     _id: user._id,
                     nome: user.nome,
@@ -37,6 +39,10 @@ module.exports = class PetController {
                     telefone: user.telefone
                 }
             });
+
+            images.map(image=>{
+                DataPet.image.push(image.filename) 
+            })
 
             // Salva o novo pet no banco de dados
             const Petsave = await DataPet.save();

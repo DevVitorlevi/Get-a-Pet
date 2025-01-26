@@ -24,7 +24,7 @@ const Imagearmazenar = multer.diskStorage({
     // Define o nome do arquivo ao salvá-lo
     filename: function (req, file, cb) {
         // O nome do arquivo será o timestamp atual + a extensão original do arquivo
-        cb(null, Date.now() + path.extname(file.originalname));
+        cb(null, Date.now() + String(Math.floor(Math.random() * 1000)) + path.extname(file.originalname));
     }
 });
 
