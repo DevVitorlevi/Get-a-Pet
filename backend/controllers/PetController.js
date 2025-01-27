@@ -218,12 +218,103 @@ module.exports = class PetController {
                 // Retorna status 200 indicando que o pet foi deletado com sucesso.
         
             } catch (err) {
-                console.log(err)
+            
                 res.status(500).json({ message: 'Erro no Servidor' });
                 // Retorna status 500 se ocorrer algum erro inesperado no servidor.
             }
 
 }
+    static async AgendarPet(req,res){
+        const id = req.params.id
+
+        if (!ObjectId.isValid(id)) { 
+            // Verifica se o ID fornecido é válido (formato correto para um ObjectId do MongoDB).
+            return res.status(422).json({ message: 'Id Inválido' });
+            // Retorna um erro 422 (Entidade Não Processável) caso o ID seja inválido.
+        }
+
+        const pet = await Pet.findById(id); 
+        // Procura o pet no banco de dados com base no ID fornecido.
+
+        const token = getToken(req); 
+        // Obtém o token de autenticação da requisição.
+
+        const user = await getUserbyToken(token); 
+        // Decodifica o token e recupera o usuário autenticado.
+
+        if (!pet) {
+            // Verifica se o pet foi encontrado no banco de dados.
+            return res.status(404).json({ message: 'Pet Não Existe' });
+            // Retorna status 404 se o pet não existir.
+        }
+
+        if (pet.user._id.equals(user._id)) {
+            // Compara o ID do usuário autenticado com o ID do dono do pet.
+            return res.status(422).json({ message: 'Voce Não Pode Adotar O Proprio Pet' });
+            // Retorna status 403 se o usuário não for o proprietário do pet.
+        }
+
+        if(pet.adotador){
+            if(pet.adotador._id.equals(user._id)){
+                return res.status(422).json({ message: 'Voce Ja agendou uma Visita a esse Pet' })
+            }
+        }
+    try{
+        pet.adotador ={
+            _id: user._id,
+            nome:user.nome,
+            image:user.image,
+        }
+
+        // Atualizando o Campo de Adotador no Pet
+        await Pet.findByIdAndUpdate(id,pet)
+        // Atualiza o pet e Adiciona o campo adotador 
+        res.status(200).json({message:'Visita Agendada'})
+    }catch(err){
+        res.status(500).json({ message: 'Erro no Servidor' });
+    }
+
+    }
+
+    static async Concluir(req,res){
+        const id = req.params.id
+
+        if (!ObjectId.isValid(id)) { 
+            // Verifica se o ID fornecido é válido (formato correto para um ObjectId do MongoDB).
+            return res.status(422).json({ message: 'Id Inválido' });
+            // Retorna um erro 422 (Entidade Não Processável) caso o ID seja inválido.
+        }
+
+        const pet = await Pet.findById(id); 
+            // Procura o pet no banco de dados com base no ID fornecido.
+    
+            const token = getToken(req); 
+            // Obtém o token de autenticação da requisição.
+    
+            const user = await getUserbyToken(token); 
+            // Decodifica o token e recupera o usuário autenticado.
+    
+            if (!pet) {
+                // Verifica se o pet foi encontrado no banco de dados.
+                return res.status(404).json({ message: 'Pet Não Existe' });
+                // Retorna status 404 se o pet não existir.
+            }
+            console.log(pet.user._id)
+            console.log(user._id)
+    
+            if (pet.user._id.equals(user._id)) {
+                // Compara o ID do usuário autenticado com o ID do dono do pet.
+                return res.status(403).json({ message: 'Acesso não autorizado' });
+                // Retorna status 403 se o usuário não for o proprietário do pet.
+            }
+
+            pet.disponivel = false
+
+            await Pet.findByIdAndUpdate(id,pet)
+            //atualiza o pet
+
+            res.status(200).json({message:'Pet adotado'})
+    }
     
 }
 

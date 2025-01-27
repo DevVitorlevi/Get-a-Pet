@@ -11,4 +11,6 @@ router.get('/myadotados', verifyToken, PetController.Myadotados)
 router.get('/pet/:id',PetController.PetId)
 router.delete('/pet/:id', verifyToken, PetController.Deletepet)
 router.patch('/pet/:id', verifyToken,ImageUpload.array('images'),PetController.UpdatePet)
+router.patch('/agendar/:id',verifyToken,PetController.AgendarPet)
+router.patch('/adotar/:id',verifyToken,PetController.Concluir)
 module.exports = router
