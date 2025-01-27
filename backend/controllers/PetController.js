@@ -119,11 +119,36 @@ module.exports = class PetController {
             res.status(500).json({ message: 'Erro no Servidor' });
             // Retorna um erro 500 (Erro Interno do Servidor) caso ocorra alguma falha no processo.
         }
+
     }
+
+    static async Deletepet(req, res) {
+        const id = req.params.id;
     
-
-
-
+        if (!ObjectId.isValid(id)) {
+            return res.status(422).json({ message: 'Id Inválido' });
+        }
+    
+        try {
+            const pet = await Pet.findById(id);
+            const token = getToken(req);
+            const user = await getUserbyToken(token);
+    
+            if (!pet) {
+                return res.status(404).json({ message: 'Pet Não Existe' });
+            }
+    
+            if (pet.user._id.toString() !== user._id.toString()) {
+                return res.status(403).json({ message: 'Acesso não autorizado' });
+            }
+    
+            await Pet.findByIdAndDelete(id);
+    
+            res.status(200).json({ message: 'Pet deletado com sucesso' });
+        } catch (err) {
+            res.status(500).json({ message: 'Erro no Servidor' });
+        }
+    }
     
 }
 
