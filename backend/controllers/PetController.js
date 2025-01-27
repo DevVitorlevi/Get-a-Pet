@@ -123,31 +123,50 @@ module.exports = class PetController {
     }
 
     static async Deletepet(req, res) {
-        const id = req.params.id;
+        const id = req.params.id; 
+        // Obtém o ID do pet a ser deletado a partir dos parâmetros da requisição.
     
         if (!ObjectId.isValid(id)) {
+            // Verifica se o ID fornecido é válido para um ObjectId do MongoDB.
             return res.status(422).json({ message: 'Id Inválido' });
+            // Retorna status 422 caso o ID seja inválido.
         }
     
         try {
-            const pet = await Pet.findById(id);
-            const token = getToken(req);
-            const user = await getUserbyToken(token);
+            const pet = await Pet.findById(id); 
+            // Procura o pet no banco de dados com base no ID fornecido.
+    
+            const token = getToken(req); 
+            // Obtém o token de autenticação da requisição.
+    
+            const user = await getUserbyToken(token); 
+            // Decodifica o token e recupera o usuário autenticado.
     
             if (!pet) {
+                // Verifica se o pet foi encontrado no banco de dados.
                 return res.status(404).json({ message: 'Pet Não Existe' });
+                // Retorna status 404 se o pet não existir.
             }
     
             if (pet.user._id.toString() !== user._id.toString()) {
+                // Compara o ID do usuário autenticado com o ID do dono do pet.
                 return res.status(403).json({ message: 'Acesso não autorizado' });
+                // Retorna status 403 se o usuário não for o proprietário do pet.
             }
     
-            await Pet.findByIdAndDelete(id);
+            await Pet.findByIdAndDelete(id); 
+            // Deleta o pet do banco de dados pelo ID.
     
             res.status(200).json({ message: 'Pet deletado com sucesso' });
+            // Retorna status 200 indicando que o pet foi deletado com sucesso.
+    
         } catch (err) {
             res.status(500).json({ message: 'Erro no Servidor' });
+            // Retorna status 500 se ocorrer algum erro inesperado no servidor.
         }
+    }
+    static async UpdatePet(req,res){
+        
     }
     
 }
