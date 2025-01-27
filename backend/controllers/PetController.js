@@ -166,8 +166,64 @@ module.exports = class PetController {
         }
     }
     static async UpdatePet(req,res){
+        const id = req.params.id
+        const { nome, idade, peso, cor, disponivel} = req.body;
+
+            const images = req.files
+
+            const updateData = {}
+    
+            // Verifica se algum campo obrigatório está faltando
+            if (!nome || !idade || !peso || !cor||images.length === 0 ) {
+                return res.status(422).json({ message: 'Campo Obrigatório' });
+            } else{
+                updateData.nome = nome
+                updateData.idade = idade
+                updateData.peso = peso
+                updateData.cor = cor
+            }
+
+            updateData.images = []
+
+            images.map(image=> updateData.images.push(image.filename))
+
+            console.log(updateData)
+
+            try {
+                const pet = await Pet.findById(id); 
+                // Procura o pet no banco de dados com base no ID fornecido.
         
-    }
+                const token = getToken(req); 
+                // Obtém o token de autenticação da requisição.
+        
+                const user = await getUserbyToken(token); 
+                // Decodifica o token e recupera o usuário autenticado.
+        
+                if (!pet) {
+                    // Verifica se o pet foi encontrado no banco de dados.
+                    return res.status(404).json({ message: 'Pet Não Existe' });
+                    // Retorna status 404 se o pet não existir.
+                }
+        
+                if (pet.user._id.toString() !== user._id.toString()) {
+                    // Compara o ID do usuário autenticado com o ID do dono do pet.
+                    return res.status(403).json({ message: 'Acesso não autorizado' });
+                    // Retorna status 403 se o usuário não for o proprietário do pet.
+                }
+        
+                await Pet.findByIdAndUpdate(id,updateData); 
+                // Deleta o pet do banco de dados pelo ID.
+        
+                res.status(200).json({ message: 'Pet Atualizado com sucesso' });
+                // Retorna status 200 indicando que o pet foi deletado com sucesso.
+        
+            } catch (err) {
+                console.log(err)
+                res.status(500).json({ message: 'Erro no Servidor' });
+                // Retorna status 500 se ocorrer algum erro inesperado no servidor.
+            }
+
+}
     
 }
 
