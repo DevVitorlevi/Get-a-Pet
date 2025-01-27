@@ -187,7 +187,7 @@ module.exports = class PetController {
 
             images.map(image=> updateData.images.push(image.filename))
 
-            console.log(updateData)
+            
 
             try {
                 const pet = await Pet.findById(id); 
