@@ -1,0 +1,11 @@
+#header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #1E3A8A;
+    padding: 1rem;
+}
+
+.menu_desktop {
+    display: none;
+}
