@@ -1,0 +1,8 @@
+footer {
+    background-color: #122A5A;
+    /* Escolha a cor desejada */
+    color: white;
+    /* Para manter um bom contraste */
+    padding: 1rem;
+    text-align: center;
+}

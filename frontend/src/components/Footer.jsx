@@ -1,9 +1,8 @@
-import React from 'react'
-
+import '../styles/Footer.css'
 const Footer = () => {
     return (
         <footer>
-            <p><span className='bold'>Vitor Levi</span>&copy;2025</p>
+            <p>Vitor Levi &copy;2025</p>
         </footer>
     )
 }
