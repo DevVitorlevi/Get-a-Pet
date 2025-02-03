@@ -1,0 +1,94 @@
+main {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    background-color: #81d4fa;
+    border-radius: 1.6rem;
+    width: 25rem;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-direction: column;
+}
+
+.inputs {
+    position: relative;
+}
+
+.input {
+    width: 80vw;
+    padding: 1rem;
+    border-radius: 0.8rem;
+    border: 2px solid #005BBB;
+    text-indent: 1.5rem;
+    outline: none;
+}
+
+.icon {
+    position: absolute;
+    top: 14px;
+    left: 10px;
+    color: #daa520;
+}
+
+.inputs label {
+    position: absolute;
+    top: 18px;
+    left: 2.5rem;
+    color: grey;
+}
+
+.input:focus {
+    border: 2px solid #f57f17;
+}
+
+.eye {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #daa520;
+}
+
+.eye-c {
+    position: absolute;
+    right: 13px;
+    top: 14px;
+    color: #daa520;
+}
+
+.required {
+    margin-top: 7px;
+    text-indent: 12px;
+    color: red;
+    display: none;
+}
+
+.btn {
+    padding: 0.8rem;
+    width: 10rem;
+    border-radius: 1rem;
+    border: 0;
+    font-size: 1rem;
+    color: white;
+    background-color: #005BBB;
+    transition: 0.4s ease;
+}
+
+.btn:hover {
+    background-color: #004085;
+}
