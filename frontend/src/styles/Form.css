@@ -1,16 +1,15 @@
 main {
-    width: 100vw;
-    height: 100vh;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: 100vh;
+    width: 100vw;
 }
 
 .container {
     background-color: #81d4fa;
     border-radius: 1.6rem;
-    width: 25rem;
+    width: 20rem;
     padding: 2rem;
     display: flex;
     align-items: center;
@@ -22,7 +21,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 1rem;
     flex-direction: column;
 }
 
@@ -31,7 +30,7 @@ main {
 }
 
 .input {
-    width: 80vw;
+    min-width: 18rem;
     padding: 1rem;
     border-radius: 0.8rem;
     border: 2px solid #005BBB;
@@ -71,13 +70,6 @@ main {
     color: #daa520;
 }
 
-.required {
-    margin-top: 7px;
-    text-indent: 12px;
-    color: red;
-    display: none;
-}
-
 .btn {
     padding: 0.8rem;
     width: 10rem;
@@ -91,4 +83,70 @@ main {
 
 .btn:hover {
     background-color: #004085;
+}
+
+p {
+    margin: 15px;
+    text-decoration: none;
+    color: black;
+}
+
+#a {
+    text-decoration: none;
+    color: black;
+}
+
+#a:hover {
+    text-decoration: underline;
+}
+
+.inputs input:focus~label,
+.inputs input:valid~label {
+    display: none;
+}
+
+@media screen and (min-width:768px) and (max-width:992px) {
+    .container {
+        font-size: 2rem;
+        width: 40rem;
+    }
+
+    h1 {
+        font-size: 3rem;
+    }
+
+    .input {
+        width: 35rem;
+        padding: 2rem;
+        font-size: 1.7rem;
+    }
+
+    .icon {
+        top: 30px;
+        width: 40px;
+        height: 40px;
+    }
+
+    .eye {
+        top: 30px;
+        width: 42px;
+        height: 42px;
+    }
+
+    .eye-c {
+        width: 45px;
+        height: 46px;
+        top: 30px;
+    }
+
+    .inputs label {
+        left: 55px;
+        top: 33px;
+    }
+
+    .btn {
+        width: 20rem;
+        padding: 20px;
+        font-size: 2rem;
+    }
 }

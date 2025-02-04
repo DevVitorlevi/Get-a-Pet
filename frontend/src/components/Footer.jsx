@@ -2,7 +2,7 @@ import '../styles/Footer.css'
 const Footer = () => {
     return (
         <footer>
-            <p>Vitor Levi &copy;2025</p>
+            <span>Vitor Levi &copy;2025</span>
         </footer>
     )
 }
