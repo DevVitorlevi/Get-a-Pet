@@ -150,3 +150,54 @@ p {
         font-size: 2rem;
     }
 }
+
+@media screen and (min-width:993px) {
+    .container {
+        font-size: 2rem;
+        width: 50rem;
+    }
+
+    .inputs label {
+        font-size: 1.5rem;
+        top: 27px;
+        left: 45px;
+    }
+
+    .icon {
+        top: 24px;
+        width: 32px;
+        height: 32px;
+    }
+
+    .eye {
+        top: 22px;
+        width: 40px;
+        height: 40px;
+    }
+
+    .eye-c {
+        top: 22px;
+        width: 40px;
+        height: 40px;
+    }
+
+    .question {
+        font-size: 1.3rem;
+    }
+
+    h1 {
+        font-size: 3rem;
+    }
+
+    .input {
+        width: 35rem;
+        padding: 1.5rem;
+        font-size: 1.6rem;
+    }
+
+    .btn {
+        padding: 1.3rem;
+        width: 20rem;
+        font-size: 1.5rem;
+    }
+}
