@@ -103,13 +103,13 @@ main {
 .error-message {
     color: red;
     font-size: 1.6rem;
-    margin-top: 8px;
+    margin-top: 2px;
     text-indent: 15px;
 }
 
 .question {
     margin: 10px;
-    font-size: 1.3rem;
+    font-size: 1rem;
 }
 
 @media screen and (min-width:768px) and (max-width:992px) {
@@ -161,34 +161,38 @@ main {
 @media screen and (min-width:993px) {
     .container {
         font-size: 2rem;
-        width: 50rem;
+        width: 35rem;
     }
 
     .inputs label {
-        font-size: 1.5rem;
-        top: 27px;
+        font-size: 1.2rem;
+        top: 18px;
         left: 45px;
     }
 
     .icon {
-        top: 24px;
-        width: 32px;
-        height: 32px;
+        top: 16px;
+        width: 23px;
+        height: 23px;
     }
 
     .eye {
-        top: 22px;
-        width: 40px;
-        height: 40px;
+        top: 10px;
+        width: 35px;
+        height: 35px;
     }
 
     .eye-c {
-        top: 22px;
-        width: 40px;
-        height: 40px;
+        top: 10px;
+        width: 35px;
+        height: 35px;
     }
 
     .question {
+        font-size: 1.3rem;
+    }
+
+    .error-message {
         font-size: 1.3rem;
     }
 
@@ -197,9 +201,9 @@ main {
     }
 
     .input {
-        width: 35rem;
-        padding: 1.5rem;
-        font-size: 1.6rem;
+        width: 30rem;
+        padding: 1rem;
+        font-size: 1rem;
     }
 
     .input-error {

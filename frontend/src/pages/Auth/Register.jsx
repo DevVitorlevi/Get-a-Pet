@@ -48,6 +48,10 @@ const Register = () => {
             setError("E-mail Inválido");
             return;
         }
+        if (formData.name.length < 3) {
+            return setError("Digite no Minímo 3 Caracteres")
+        }
+
 
         setFormData({ name: "", email: "", phone: "", password: "", confirm: "" });
         inputName.current.focus();
@@ -73,13 +77,14 @@ const Register = () => {
                             type="text"
                             name="name"
                             ref={inputName}
-                            className="input"
+                            className={`input  ${error ? 'input-error' : ''}`}
                             required
                             value={formData.name}
                             onChange={handleChange}
                         />
                         <User className='icon' />
                         <label>Nome</label>
+                        {error && <p className='erro-message'>{error}</p>}
                     </div>
 
                     <div className="inputs">
@@ -101,7 +106,7 @@ const Register = () => {
                         <input
                             type="tel"
                             name="phone"
-                            className="input"
+                            className={`input  ${error ? 'input-error' : ''}`}
                             required
                             ref={inputPhone}
                             value={formData.phone}
@@ -115,7 +120,7 @@ const Register = () => {
                         <input
                             type="password"
                             name="password"
-                            className="input"
+                            className={`input  ${error ? 'input-error' : ''}`}
                             required
                             ref={inputPassword}
                             value={formData.password}
@@ -132,7 +137,7 @@ const Register = () => {
                         <input
                             type="password"
                             name="confirm"
-                            className="input"
+                            className={`input  ${error ? 'input-error' : ''}`}
                             required
                             ref={inputConfirm}
                             value={formData.confirm}
